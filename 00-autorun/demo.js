@@ -3,7 +3,7 @@ console.clear();
 var person = mobx.observable({
 	firstName: 'Matt',
 	lastName: 'Ruby',
-	age: 25
+	age: 0
 });
 
 mobx.autorun(function () {
