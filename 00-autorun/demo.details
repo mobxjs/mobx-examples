@@ -5,6 +5,6 @@
  authors:
    - Matt Ruby
  normalize_css: no
- js_wrap: l
+ js_wrap: b
  ...
  */
