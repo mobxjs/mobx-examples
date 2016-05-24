@@ -1,5 +1,3 @@
-console.clear();
-
 var person = mobx.observable({
 	stats: mobx.map()
 });

@@ -1,5 +1,3 @@
-console.clear();
-
 var person = mobx.observable({
 	firstName: 'Matt',
 	lastName: 'Ruby',

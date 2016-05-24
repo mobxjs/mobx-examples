@@ -1,5 +1,3 @@
-console.clear();
-
 var Person = function (firstName, lastName, age) {
 	mobx.extendObservable(this, {
 		firstName: firstName,
@@ -26,5 +24,4 @@ mobx.autorun(function () {
 
 person.firstName = 'Mike';
 person.firstName = 'Lissy';
-person.nickname = 'Red'
-
+person.nickname = 'Red';
