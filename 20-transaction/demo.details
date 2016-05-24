@@ -1,0 +1,13 @@
+ /*
+ ---
+ name: Mobx transaction example
+ description: Shows mobx's transaction value feature and how it batches updates
+ authors:
+   - Matt Ruby
+ resources:
+   - https://cdn.jsdelivr.net/g/lodash@4.12.0
+   - https://npmcdn.com/mobx@2.2.0-beta.1/lib/mobx.umd.js
+ normalize_css: no
+ js_wrap: l
+ ...
+ */
