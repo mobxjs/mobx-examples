@@ -7,7 +7,7 @@ var person = mobx.observable({
 });
 
 mobx.autorun(function () {
-	logger.log(person.firstName + ' ' + person.age);
+	console.log(person.firstName + ' ' + person.age);
 });
 
 // this will print Matt NN 10 times
