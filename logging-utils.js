@@ -1,7 +1,7 @@
 var logger = mobx.observable({
 	logList: [],
 	log: function (message) {
-		logList.push(message);
+		this.logList.push(message);
 	}
 });
 
