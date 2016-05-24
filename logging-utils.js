@@ -12,11 +12,11 @@ var renderLog = function () {
 	);
 };
 
-var logPrinter = React.createClass({
+var logPrinter = mobxreact.observer(React.createClass({
 	displayName: 'printer.log',
 	render: function () {
 		return _.map(this.props.logger.logList, function (logItem) {
 			React.createElement('div', null, logItem);
 		});
 	}
-});
+}));
