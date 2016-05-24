@@ -37,6 +37,15 @@ var renderLog = function () {
 	);
 };
 
+var wrapConsole = function () {
+	var original = console.log;
+	console.log = function () {
+		original.apply(console, arguments);
+		logger.log.apply(logger, arguments);
+	}
+};
+
 window.onload = function () {
+	wrapConsole();
 	renderLog();
 };
