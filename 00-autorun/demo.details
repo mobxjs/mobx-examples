@@ -9,6 +9,6 @@
    - https://npmcdn.com/mobx@2.2.0-beta.1/lib/mobx.umd.js
    - https://npmcdn.com/mobx-react@3.2.0
  normalize_css: no
- wrap: b
+ js_wrap: b
  ...
  */
