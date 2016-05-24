@@ -12,7 +12,7 @@ var renderLog = function () {
 	);
 };
 
-var logPrinter = mobxreact.observer(React.createClass({
+var logPrinter = mobxReact.observer(React.createClass({
 	displayName: 'printer.log',
 	render: function () {
 		return _.map(this.props.logger.logList, function (logItem) {
