@@ -38,17 +38,13 @@ var renderLog = function () {
 };
 
 var wrapConsole = function () {
-	console.clear();
-	logger.logList = [];
 
 	var original = console.log;
 	console.log = function () {
 		original.apply(console, arguments);
 		logger.log.apply(logger, arguments);
-	}
+	};
+
 	renderLog();
 };
 
-window.onload = function () {
-	wrapConsole();
-};
