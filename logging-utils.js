@@ -37,7 +37,7 @@ var renderLog = function () {
 	);
 };
 
-var wrapConsole = function () {
+var wrapConsole = _.once(function () {
 
 	var original = console.log;
 	console.log = function () {
@@ -46,5 +46,5 @@ var wrapConsole = function () {
 	};
 
 	renderLog();
-};
+});
 

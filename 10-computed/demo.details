@@ -4,10 +4,7 @@
  description: Shows mobx's computed value feature and how it caches it's value
  authors:
    - Matt Ruby
- resources:
-   - https://cdn.jsdelivr.net/g/react@15.0.2(react.min.js+react-dom.min.js),lodash@4.12.0
-   - https://npmcdn.com/mobx@2.2.0-beta.1/lib/mobx.umd.js
  normalize_css: no
- js_wrap: l
+ js_wrap: b
  ...
  */
