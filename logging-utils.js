@@ -20,9 +20,9 @@ var logItemRenderer = mobxReact.observer(function logItem (props) {
 	var logItem = props.logItem;
 	var children = logItem;
 
-	if(_.isObject(logItem)) {
+	if (_.isObject(logItem)) {
 		children = JSON.stringify(logItem);
-	} else if(_.isArray(logItem)) {
+	} else if (_.isArray(logItem)) {
 		children = logItem.join(',');
 	}
 
@@ -39,9 +39,9 @@ var renderLog = function () {
 
 var wrapConsole = _.once(function () {
 
-	var original = console.log;
+	var originalLog = console.log;
 	console.log = function () {
-		original.apply(console, arguments);
+		originalLog.apply(console, arguments);
 		logger.log.apply(logger, arguments);
 	};
 

@@ -5,7 +5,7 @@ var person = mobx.observable({
 	lastName: 'Ruby',
 	age: 0,
 	fullName: function () {
-		console.count('fullName');
+		console.log('hit fullName');
 		return this.firstName + ' ' + this.lastName;
 	}
 });
@@ -14,7 +14,7 @@ mobx.autorun(function () {
 	console.log(person.fullName + ' ' + person.age);
 });
 
-// this will print Matt NN 10 times
+// this will print Matt Ruby NN 10 times
 _.times(10, function () {
 	person.age = _.random(40);
 });
