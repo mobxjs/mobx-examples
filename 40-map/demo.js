@@ -1,9 +1,6 @@
 console.clear();
 
 var person = mobx.observable({
-	firstName: 'Matt',
-	lastName: 'Ruby',
-	age: 0,
 	stats: mobx.map()
 });
 
