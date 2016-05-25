@@ -1,8 +1,8 @@
 var logger = mobx.observable({
-	logList: [],
-	log: mobx.action('log', function (message) {
-		this.logList.push(message);
-	})
+	logList: []
+});
+logger.log = mobx.action('log', function (message) {
+	this.logList.push(message);
 });
 
 var logPrinter = mobxReact.observer(React.createClass({
@@ -38,11 +38,14 @@ var renderLog = function () {
 };
 
 var wrapConsole = _.once(function () {
-
+	// logger.log('Setup');
 	var originalLog = console.log;
 	console.log = function () {
-		originalLog.apply(console, arguments);
-		logger.log(arguments);
+		var args = arguments;
+		originalLog.apply(console, args);
+		setTimeout(function () {
+			logger.log.apply(logger, args);
+		}, 1);
 	};
 
 	renderLog();
