@@ -1,8 +1,8 @@
 var logger = mobx.observable({
 	logList: [],
-	log: function (message) {
+	log: mobx.action('log', function (message) {
 		this.logList.push(message);
-	}
+	})
 });
 
 var logPrinter = mobxReact.observer(React.createClass({
@@ -42,9 +42,7 @@ var wrapConsole = _.once(function () {
 	var originalLog = console.log;
 	console.log = function () {
 		originalLog.apply(console, arguments);
-		mobx.untracked(function () {
-			logger.log.apply(logger, arguments);
-		});
+		logger.log(arguments);
 	};
 
 	renderLog();

@@ -3,9 +3,7 @@ var person = mobx.observable({
 	lastName: 'Ruby',
 	age: 0,
 	fullName: function () {
-		mobx.untracked(function () {
-			console.log('hit fullName');
-		});
+		console.log('hit fullName');
 		return this.firstName + ' ' + this.lastName;
 	}
 });
