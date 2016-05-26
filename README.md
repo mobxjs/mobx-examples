@@ -10,3 +10,5 @@ A collection of simple mobx examples
 [extendObservable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/30-extendObservable)
 
 [map](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/40-map)
+
+[todo with factories, actions and the dev tools](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/00-todo)
