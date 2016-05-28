@@ -1,9 +1,9 @@
 var person = mobx.observable({
-	stats: mobx.map()
+	stats: mobx.asMap({})
 });
 
 mobx.autorun(function () {
-	console.log(person.stats.toJs());
+	console.log(person.stats.toJS());
 });
 
 person.stats.set('height', 6);
