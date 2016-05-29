@@ -1,5 +1,17 @@
 var sampleArray = mobx.observable(["Matt", "Kelly"]);
 
+var obsArrayPropType =  React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    function(props, propName, componentName) {
+        if (!mobx.isObservableArray(props[propName])) {
+            return new Error(
+                'Invalid prop `' + propName + '` supplied to' +
+                ' `' + componentName + '`. Validation failed.'
+            );
+        }
+    }
+]);
+
 var ListView = mobxReact.observer(function ListView() {
        return React.createElement('ul', null,
             this.props.list.map(function (name) {
@@ -9,10 +21,7 @@ var ListView = mobxReact.observer(function ListView() {
     }
 );
 ListView.propTypes = {
-    list: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.instanceOf(Array)
-    ]).isRequired
+    list: obsArrayPropType.isRequired
 };
 
 ReactDOM.render(
