@@ -15,3 +15,5 @@ Note how the computed fullName is cached.
 [asMap](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/40-map)
 
 [todo with factories, actions and the dev tools](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/00-todo)
+
+[array proptypes example](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/10-array-propType)
