@@ -11,7 +11,7 @@ var ListView = mobxReact.observer(function ListView() {
 ListView.propTypes = {
     list: React.PropTypes.oneOfType([
         React.PropTypes.array,
-        React.PropTypes.object
+        React.PropTypes.instanceOf(Array)
     ]).isRequired
 };
 
