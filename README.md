@@ -18,6 +18,13 @@ Note how the computed fullName is cached.
 
 [transaction](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/20-transaction)
 
+[action](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/50-action)
+Non-strict action usage.  You may still set values outside of the actions.
+
+[action strict mode](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/51-action-strict)
+Strict action usage.  OPEN YOUR CONSOLE.  You should see an error where I try to set firstName directly.
+Note how easy it is to see the cause in the stack.
+
 ## React + MobX examples
 
 [todo with factories, actions and the dev tools](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/00-todo)

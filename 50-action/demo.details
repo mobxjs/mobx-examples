@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx transaction example
+ description: Shows mobx's transaction value feature and how it batches updates
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */
