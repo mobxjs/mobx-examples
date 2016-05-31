@@ -9,9 +9,16 @@ var person = mobx.observable({
         return this.firstName + ' ' + this.lastName;
     }
 });
-// you could also instatiate a Person and play with it's prototype.
+// you could also instantiate a Person and play with it's prototype.
 _.assign(person, {
     setAge: mobx.action(function setAge(age) {
+        var self = this;
+        // Note how the action creates a transaction.
+        // none of these random this.age assignments will affect the autorun.
+        _.times(10, function () {
+            self.age = _.random(40);
+        });
+        // this will set as it's the last part of the transaction
         this.age = age;
     }),
     setFirstName: mobx.action(function setFirstName(firstName) {
@@ -19,6 +26,10 @@ _.assign(person, {
     }),
     setLastName: mobx.action(function setLastName(lastName) {
         this.lastName = lastName;
+    }),
+    setFirstAndLastName: mobx.action(function setFirstAndLastName (firstName, lastName) {
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
     })
 });
 
@@ -27,16 +38,12 @@ mobx.autorun(function () {
 });
 
 // this will print Matt NN 1 times
-mobx.transaction(function () {
-    _.times(10, function () {
-        person.setAge(_.random(40));
-    });
-});
+person.setAge(_.random(40));
+
+// Note how we're changing 2 fields without using transaction.
+// action wraps everything inside a transaction automatically
+person.setFirstAndLastName('Jon', 'Smith');
+
 // these will fire an error as we are in strict mode
 person.firstName = 'Mike';
 person.firstName = 'Lissy';
-
-mobx.transaction(function () {
-    person.setFirstName('Jon');
-    person.setLastName('Smith');
-});
