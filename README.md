@@ -27,6 +27,8 @@ Non-strict action usage.  You may still set values outside of the actions.
 Strict action usage.  OPEN YOUR CONSOLE.  You should see an error where I try to set firstName directly.
 Note how easy it is to see the cause in the stack.
 
+[reaction](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/70-reaction)
+
 [when](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/60-when)
 
 ## React + MobX examples

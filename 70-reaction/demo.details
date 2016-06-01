@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx autorun example
+ description: Shows mobx.reaction
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */
