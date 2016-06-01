@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx baseline
+ description: ready to go mobx sandbox
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */
