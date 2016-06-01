@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx autorun example
+ description: Shows mobx.autorun and how it only updates when a field it's using is changed
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */

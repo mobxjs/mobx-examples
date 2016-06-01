@@ -50,4 +50,3 @@ var wrapConsole = _.once(function () {
 
 	renderLog();
 });
-
