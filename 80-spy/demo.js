@@ -5,7 +5,10 @@ var person = mobx.observable({
 });
 
 mobx.spy(function (spyReport) {
-	console.log(spyReport);
+	// dig in here.  Have fun picking through all the different types.
+	if (spyReport.type) {
+		console.log(spyReport.type + ': rawSpyData: ', spyReport);
+	}
 });
 
 mobx.autorun(function printFirstNameAndAge() {

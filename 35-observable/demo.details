@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx extendObservable example
+ description: Shows mobx's observable feature
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */

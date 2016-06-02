@@ -19,7 +19,3 @@ mobx.transaction(function () {
 	person.stats.set('height', '5 feet, 11 inches');
 	person.stats.set('height', 5);
 });
-
-
-
-
