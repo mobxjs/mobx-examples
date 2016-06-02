@@ -1,4 +1,5 @@
 var Person = function (firstName, lastName, age) {
+	this.id = _.uniqueId('person_');
 	mobx.extendObservable(this, {
 		firstName: firstName,
 		lastName: lastName,
@@ -6,7 +7,7 @@ var Person = function (firstName, lastName, age) {
 		fullName: function () {
 			console.count('fullName');
 			return this.firstName + ' ' + this.lastName;
-			}
+		}
 	});
 };
 
@@ -16,7 +17,7 @@ mobx.autorun(function () {
 	console.log(person.fullName + ' ' + person.age);
 });
 
-mobx.extendObservable(person, { nickname: 'Ruby'});
+mobx.extendObservable(person, {nickname: 'Ruby'});
 
 mobx.autorun(function () {
 	console.log('Nickname: ' + person.nickname + ' ' + person.age);

@@ -3,6 +3,8 @@ var person = mobx.observable({
 	lastName: 'Ruby',
 	age: 0,
 	fullName: function () {
+		// Note how this computed value is cached.
+		// We only hit this function 3 times.
 		console.log('hit fullName');
 		return this.firstName + ' ' + this.lastName;
 	}
