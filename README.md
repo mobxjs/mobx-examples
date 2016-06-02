@@ -11,40 +11,40 @@ console.logs out to the results window on jsFiddle.
 
 ### Creating Observables
 
-[observable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/35-observable)
+[observable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/35-observable)
 
-[extendObservable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/30-extendObservable)
+[extendObservable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/30-extendObservable)
 
-[asMap](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/40-map)
+[asMap](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/40-map)
 
 ### Reactions:
 
-[autorun](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/00-autorun)
+[autorun](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/00-autorun)
 Note how the autorun only fires when a referenced field changes.
 
-[reaction](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/70-reaction)
+[reaction](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/70-reaction)
 
-[when](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/60-when)
+[when](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/60-when)
 
 ### Computed Values
 
-[computed](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/10-computed)
+[computed](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/10-computed)
 Note how the computed fullName is cached.
 
 ### Actions
 
-[action](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/50-action)
+[action](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/50-action)
 Non-strict action usage.  You may still set values outside of the actions.
 
-[action strict mode](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/51-action-strict)
+[action strict mode](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/51-action-strict)
 Strict action usage.  OPEN YOUR CONSOLE.  You should see an error where I try to set firstName directly.
 Note how easy it is to see the cause in the stack.
 
 ### Utils
 
-[transaction](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/20-transaction)
+[transaction](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/20-transaction)
 
-[spy](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/80-spy)
+[spy](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/80-spy)
 
 ## React + MobX examples
 
