@@ -11,6 +11,8 @@ console.logs out to the results window on jsFiddle.
 
 ### Creating Observables
 
+[observable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/35-observable)
+
 [extendObservable](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/30-extendObservable)
 
 [asMap](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/40-map)
