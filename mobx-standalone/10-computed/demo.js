@@ -11,7 +11,7 @@ var person = mobx.observable({
 });
 
 mobx.autorun(function () {
-	console.log(person.fullName + ' ' + person.age);
+	console.log('autorun: ' + person.fullName + ' ' + person.age);
 });
 
 // this will print Matt Ruby NN 10 times

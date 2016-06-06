@@ -9,7 +9,7 @@ var person = mobx.observable({
 mobx.reaction(function () {
 	return person.firstName + ' ' + person.age;
 }, function (fnameAndAge) {
-	console.log(fnameAndAge + ' ' + person.lastName);
+	console.log('reaction: ' + fnameAndAge + ' ' + person.lastName);
 });
 
 // this will print Matt NN 10 times

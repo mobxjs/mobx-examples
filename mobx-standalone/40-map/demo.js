@@ -3,7 +3,7 @@ var person = mobx.observable({
 });
 
 mobx.autorun(function () {
-	console.log(person.stats.toJS());
+	console.log('autorun: ' + person.stats.toJS());
 });
 
 person.stats.set('height', 6);

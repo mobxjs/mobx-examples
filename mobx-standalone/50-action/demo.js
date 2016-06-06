@@ -32,7 +32,7 @@ _.assign(person, {
 });
 
 mobx.autorun(function () {
-    console.log(person.fullName + ' ' + person.age);
+    console.log('autorun: ' + person.fullName + ' ' + person.age);
 });
 
 // this will print Matt NN 1 times

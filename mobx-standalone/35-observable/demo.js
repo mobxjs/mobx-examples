@@ -9,7 +9,7 @@ var person = mobx.observable({
 });
 
 mobx.autorun(function () {
-	console.log(person.fullName + ' ' + person.age);
+	console.log('autorun: ' + person.fullName + ' ' + person.age);
 });
 
 person.firstName = 'Mike';
