@@ -4,7 +4,7 @@ var person = mobx.observable({
 	age: 0
 });
 
-// note that thill will not fire initially, only on change.
+// note that this will not fire initially, only on change.
 // so you will not see the age 0 run first unlike autorun.
 mobx.reaction(function () {
 	return person.firstName + ' ' + person.age;
