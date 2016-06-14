@@ -16,8 +16,8 @@ var person = mobx.observable({
 		return fullName;
 	},
 	setFirstAndLastName: mobx.action(function setFirstAndLastName (firstName, lastName) {
-		this.firstName(firstName);
-		this.lastName(lastName);
+		this.firstName = firstName;
+		this.lastName = lastName;
 	})
 });
 
