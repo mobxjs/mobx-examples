@@ -7,10 +7,7 @@ var person = mobx.observable({
     fullName: function () {
         console.count('fullName');
         return this.firstName + ' ' + this.lastName;
-    }
-});
-// you could also instantiate a Person and play with it's prototype.
-_.assign(person, {
+    },
     setAge: mobx.action(function setAge(age) {
         var self = this;
         // Note how the action creates a transaction.
