@@ -2,7 +2,7 @@ var person = mobx.observable({
 	stats: mobx.asMap({})
 });
 
-mobx.autorun(function () {
+mobx.autorun(function auto_statsToJS () {
 	console.log('autorun: ' + person.stats.toJS());
 });
 

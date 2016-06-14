@@ -10,7 +10,7 @@ var person = mobx.observable({
 	}
 });
 
-mobx.autorun(function () {
+mobx.autorun(function auto_fullNameAge () {
 	console.log('autorun: ' + person.fullName + ' ' + person.age);
 });
 

@@ -13,7 +13,7 @@ var Person = function (firstName, lastName, age) {
 
 var person = new Person('Matt', 'Ruby', 0);
 
-mobx.autorun(function () {
+mobx.autorun(function auto_fullNameAge () {
 	console.log(person.fullName + ' ' + person.age);
 });
 

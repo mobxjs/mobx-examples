@@ -4,7 +4,7 @@ var person = mobx.observable({
 	age: 0
 });
 
-mobx.autorun(function () {
+mobx.autorun(function auto_firstNameAge () {
 	console.log('autorun: ' + person.firstName + ' ' + person.age);
 });
 

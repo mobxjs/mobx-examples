@@ -5,6 +5,7 @@ var person = mobx.observable({
     lastName: 'Ruby',
     age: 0,
     fullName: function () {
+		mobx.whyRun();
         console.count('fullName');
         return this.firstName + ' ' + this.lastName;
     },
@@ -30,7 +31,7 @@ var person = mobx.observable({
     })
 });
 
-mobx.autorun(function () {
+mobx.autorun(function auto_fullNameAge () {
     console.log(person.fullName + ' ' + person.age);
 });
 
