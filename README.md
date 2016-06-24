@@ -53,3 +53,5 @@ Note how easy it is to see the cause in the stack.
 * [todo with factories, actions and the dev tools](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/00-todo)
 
 * [array proptype example](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/10-array-propType)
+
+* [EXPERIMENTAL mobxReact Provider example](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/20-provider)
