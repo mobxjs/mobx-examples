@@ -1,3 +1,4 @@
+// individual timer
 var Timer = function (initialMilliseconds) {
 	this.id = _.uniqueId('timer_');
 	mobx.extendObservable(this, {
@@ -19,6 +20,7 @@ var Timer = function (initialMilliseconds) {
 	});
 };
 
+// collection of timers
 var TimerStore = function () {
 	mobx.extendObservable(this, {
 		isRunning: false,
@@ -70,11 +72,11 @@ var TimerStore = function () {
 		lapTimer: mobx.action('lapTimer', function () {
 			this.laps.push(new Timer(this.timer.totalMilliSeconds - this.lapTime));
 		}),
-		stopTimer: mobx.action(function () {
+		stopTimer: mobx.action('stopTimer', function () {
 			this.timer.saveTime();
 			this.isRunning = false;
 		}),
-		resetTimer: mobx.action(function () {
+		resetTimer: mobx.action('resetTimer', function () {
 			this.timer.reset();
 			this.laps = [];
 			this.isRunning = false;
