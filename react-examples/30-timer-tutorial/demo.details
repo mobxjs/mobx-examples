@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx todo example
+ description: Shows a mobx backed timer using Provider and actions
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */
