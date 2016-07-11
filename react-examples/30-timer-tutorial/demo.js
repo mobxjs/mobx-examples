@@ -98,23 +98,23 @@ var Main = mobxReact.observer(React.createClass({
 	}
 }));
 
-var activeTimerRenderer = mobxReact.observer(['timerStore'], React.createClass({
+var activeTimerRenderer = mobxReact.inject('timerStore')(mobxReact.observer(React.createClass({
 	displayName: 'activeTimer',
 	render: function () {
 		return React.DOM.div(null, this.props.timerStore.mainDisplay);
 	}
-}));
+})));
 
-var lapTimerRenderer = mobxReact.observer(['timerStore'], React.createClass({
+var lapTimerRenderer = mobxReact.inject('timerStore')(mobxReact.observer(React.createClass({
 	displayName: 'lapTimer',
 	render: function () {
 		return React.DOM.div(null, React.DOM.ul(null, this.props.timerStore.lapData.map(function (lap) {
 			return React.DOM.li({key: lap.id}, lap.text);
 		})));
 	}
-}));
+})));
 
-var buttonRenderer = mobxReact.observer(['timerStore'], React.createClass({
+var buttonRenderer = mobxReact.inject('timerStore')(mobxReact.observer(React.createClass({
 	displayName: 'buttons',
 	render: function () {
 		var timerStore = this.props.timerStore;
@@ -140,7 +140,7 @@ var buttonRenderer = mobxReact.observer(['timerStore'], React.createClass({
 		}
 		return React.DOM.div(null, buttons);
 	}
-}));
+})));
 
 var timerStore = new TimerStore();
 

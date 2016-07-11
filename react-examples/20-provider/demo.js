@@ -1,5 +1,5 @@
 // Note how 'color' is referenced in observer then as regular props here
-var Button = mobxReact.observer(['color'], React.createClass({
+var Button = mobxReact.inject('color')(mobxReact.observer(React.createClass({
 	render: function () {
 		return React.createElement(
 			"button",
@@ -7,7 +7,7 @@ var Button = mobxReact.observer(['color'], React.createClass({
 			this.props.children
 		);
 	}
-}));
+})));
 
 // Note how color is never referenced here
 var Message = React.createClass({
