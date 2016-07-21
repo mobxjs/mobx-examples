@@ -2,18 +2,18 @@ mobx.useStrict(true);
 var todoFactory = function (title) {
 
     var todo = {
-        id: Math.random(),
-        toggleStatus: mobx.action(function toggleStatus() {
-            todo.finished = !todo.finished;
-        })
+        id: Math.random()
     };
     mobx.extendObservable(todo,
         {
             title: title,
-            finished: false
+            finished: false,
+			toggleStatus: mobx.action(function toggleStatus () {
+				todo.finished = !todo.finished;
+			})
         }
     );
-    return todo;
+	return RemoteDev(todo, {name: 'Todo: ' + title});
 };
 
 var todoListFactory = function () {
@@ -33,7 +33,7 @@ var todoListFactory = function () {
 		})
     });
 
-    return todoList;
+	return RemoteDev(todoList, {name: 'Todo List'});
 };
 
 var TodoListView = mobxReact.observer(function TodoListView() {
@@ -71,7 +71,7 @@ var TodoView = mobxReact.observer(
     })
 );
 
-var store = RemoteDev(todoListFactory());
+var store = todoListFactory();
 
 ReactDOM.render(
     React.createElement(TodoListView, {todoList: store}),

@@ -58,3 +58,6 @@ Note how easy it is to see the cause in the stack.
 
 * [Timer example](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/30-timer-tutorial)
 Timer example heavily based on [Patrick Klitzke's](https://github.com/philolo1) tutorial [It's all about time: Building a performant Stopwatch with MobX and React - fast](https://onsen.io/blog/mobx-tutorial-react-stopwatch/)
+
+* [Super cool MobX Redux tools example!](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/40-todo-Redux-devtools)
+Huge Thanks to [@mdiordiev](https://twitter.com/mdiordiev)!  See his project here for details: https://github.com/zalmoxisus/mobx-remotedev
