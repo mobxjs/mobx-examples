@@ -49,7 +49,7 @@ var countdownTimerFactory = function (durationMinutes, options) {
 					}
 				});
 			}, settings.interval);
-		} else if(intervalID) {
+		} else if (intervalID) {
 			window.clearInterval(intervalID);
 		}
 	});
@@ -111,17 +111,35 @@ var gameFactory = function (title, blindData) {
 		isRunning: function () {
 			return game.activeBlind.isRunning;
 		},
+		isLastBlindActive: function () {
+			return game.activeBlindIndex === game.blinds.length - 1;
+		},
+		isComplete: function () {
+			return game.isLastBlindActive && game.activeBlind.isComplete;
+		},
 		startGame: mobx.action('Start Game', function () {
 			game.activeBlind.startBlindTimer();
 		}),
 		pauseGame: mobx.action('Start Game', function () {
 			game.activeBlind.pauseBlindTimer();
 		}),
+		resetGame: mobx.action('Reset Game', function () {
+			_.forEach(game.blinds, function (blind) {
+				blind.resetBlindTimer();
+			});
+			game.activateBlind(game.blinds[0]);
+		}),
+		endGame: mobx.action('Game Over!', function () {
+			game.activateBlind(game.blinds[0]);
+		}),
 		activateBlind: mobx.action('Activate Blind', function (blindToActivate) {
 			_.forEach(game.blinds, function (blind) {
 				blind.active = false;
 			});
 			blindToActivate.active = true;
+		}),
+		activateNextBlind: mobx.action('Activate next blind', function () {
+			game.activateBlind(game.blinds[game.activeBlindIndex + 1]);
 		})
 	});
 
@@ -129,9 +147,12 @@ var gameFactory = function (title, blindData) {
 		game.blinds[0].activateBlind();
 	}
 
-	mobx.autorun(function () {
-		if(game.activeBlind.isComplete) {
-
+	mobx.autorun('Auto Next Blind', function () {
+		if (game.isComplete) {
+			game.resetGame();
+		} else if (game.activeBlind.isComplete) {
+			game.activateNextBlind();
+			game.activeBlind.startBlindTimer();
 		}
 	});
 
@@ -204,8 +225,8 @@ var timerRenderer = mobxReact.observer(React.createClass({
 
 var game = gameFactory('test', [
 	{duration: 1, little: 20, big: 10},
-	{duration: 4, little: 30, big: 60},
-	{duration: 4, little: 40, big: 80}
+	{duration: 1, little: 30, big: 60},
+	{duration: 1, little: 40, big: 80}
 ]);
 // var testTimer = countdownTimerFactory(1);
 // var testBlind = new Blind(1, 100, 50);
