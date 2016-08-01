@@ -74,6 +74,9 @@ var blindFactory = function (durationInMinutes, littleBlind, bigBlind) {
 		isRunning: function () {
 			return blind.timer.isTimerRunning;
 		},
+		isComplete: function () {
+			return blind.timer.isComplete;
+		},
 		startBlindTimer: mobx.action(function startBlindTimer () {
 			blind.timer.startTimer();
 		}),
@@ -89,18 +92,21 @@ var blindFactory = function (durationInMinutes, littleBlind, bigBlind) {
 
 };
 
-var gameFactory = function (title, blinds) {
+var gameFactory = function (title, blindData) {
 	var game = {
 		id: _.uniqueId('game_'),
 		title: title
 	};
 
 	mobx.extendObservable(game, {
-		blinds: _.map(blinds, function (blind) {
+		blinds: _.map(blindData, function (blind) {
 			return blindFactory(blind.duration, blind.big, blind.little);
 		}),
 		activeBlind: function () {
-			return _.find(game.blinds, 'active');
+			return game.blinds[game.activeBlindIndex];
+		},
+		activeBlindIndex: function () {
+			return _.findIndex(game.blinds, 'active');
 		},
 		isRunning: function () {
 			return game.activeBlind.isRunning;
@@ -110,12 +116,24 @@ var gameFactory = function (title, blinds) {
 		}),
 		pauseGame: mobx.action('Start Game', function () {
 			game.activeBlind.pauseBlindTimer();
+		}),
+		activateBlind: mobx.action('Activate Blind', function (blindToActivate) {
+			_.forEach(game.blinds, function (blind) {
+				blind.active = false;
+			});
+			blindToActivate.active = true;
 		})
 	});
 
 	if (!game.activeBlind) {
 		game.blinds[0].activateBlind();
 	}
+
+	mobx.autorun(function () {
+		if(game.activeBlind.isComplete) {
+
+		}
+	});
 
 	return game;
 };
