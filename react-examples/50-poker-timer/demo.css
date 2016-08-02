@@ -1,0 +1,30 @@
+.poker-timer {
+	width: 80%;
+	margin: 10px auto;
+}
+
+.active-blind {
+	padding: 10px 0;
+}
+
+.active-blind-timer {
+	display: flex;
+	justify-content: center;
+	padding: 0 0 10px 0;
+}
+
+.active-blind-timer > * {
+	font-size: 80px;
+}
+.divider {
+	padding: 0 10px;
+}
+
+.progress-bar-container {
+	border: 1px solid #ccc;
+}
+
+.progress-bar {
+	height: 30px;
+	background-color: aquamarine;
+}

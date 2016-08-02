@@ -1,18 +1,18 @@
 mobx.useStrict(true);
 
-var countdownTimerFactory = function (durationMinutes, options) {
+var countdownTimerFactory = function (durationMilliseconds, options) {
 
 	var intervalID;
 
 	var timer = {
 		id: _.uniqueId('countdownTimer_'),
-		originalMinutes: durationMinutes,
-		originalMilliseconds: moment.duration(durationMinutes, 'minutes').asMilliseconds()
+		originalMilliseconds: durationMilliseconds
 	};
 
 	var settings = _.assign({
-		interval: 100,
-		runTime: 0
+		interval: 10,
+		runTime: 0,
+		resetOnComplete: true
 	}, options);
 
 	mobx.extendObservable(timer, {
@@ -22,7 +22,24 @@ var countdownTimerFactory = function (durationMinutes, options) {
 			return timer.durationAsMilliseconds <= 0;
 		},
 		display: function () {
-			return moment(timer.durationAsMilliseconds).format('mm : ss : SS');
+			return _.padStart(timer.minutesRemaining, 2, 0) + ' : '
+				   + _.padStart(timer.secondsRemaining, 2, 0) + ' : '
+				   + _.padEnd(timer.millisecondsRemaining, 3, 0);
+		},
+		durationAsDate: function () {
+			return new Date(timer.durationAsMilliseconds);
+		},
+		millisecondsRemaining: function () {
+			return timer.durationAsDate.getUTCMilliseconds();
+		},
+		secondsRemaining: function () {
+			return timer.durationAsDate.getUTCSeconds();
+		},
+		minutesRemaining: function () {
+			return timer.durationAsDate.getUTCMinutes();
+		},
+		hoursRemaining: function () {
+			return timer.durationAsDate.getUTCHours();
 		},
 		percentageComplete: function () {
 			return 100 - _.round((timer.durationAsMilliseconds / timer.originalMilliseconds) * 100, 2);
@@ -50,6 +67,9 @@ var countdownTimerFactory = function (durationMinutes, options) {
 				});
 			}, settings.interval);
 		} else if (intervalID) {
+			if (settings.resetOnComplete) {
+				timer.reset();
+			}
 			window.clearInterval(intervalID);
 		}
 	});
@@ -224,9 +244,9 @@ var timerRenderer = mobxReact.observer(React.createClass({
 }));
 
 var game = gameFactory('test', [
-	{duration: 1, little: 20, big: 10},
-	{duration: 1, little: 30, big: 60},
-	{duration: 1, little: 40, big: 80}
+	{duration: 10000, little: 20, big: 10},
+	{duration: 1000, little: 30, big: 60},
+	{duration: 1000, little: 40, big: 80}
 ]);
 // var testTimer = countdownTimerFactory(1);
 // var testBlind = new Blind(1, 100, 50);

@@ -2,63 +2,78 @@ mobx.useStrict(true);
 
 var countdownTimerFactory = function (durationMilliseconds, options) {
 
-	var intervalID;
+		var intervalID;
 
-	var timer = {
-		id: _.uniqueId('countdownTimer_'),
-		originalMilliseconds: durationMilliseconds
-	};
+		var timer = {
+			id: _.uniqueId('countdownTimer_'),
+			originalMilliseconds: durationMilliseconds
+		};
 
-	var settings = _.assign({
-		interval: 100,
-		runTime: 0,
-		resetOnComplete: true
-	}, options);
+		var settings = _.assign({
+			interval: 10,
+			runTime: 0,
+			resetOnComplete: true
+		}, options);
 
-	mobx.extendObservable(timer, {
-		durationAsMilliseconds: timer.originalMilliseconds,
-		isTimerRunning: false,
-		isComplete: function () {
-			return timer.durationAsMilliseconds <= 0;
-		},
-		display: function () {
-			return moment(timer.durationAsMilliseconds).format('mm : ss : SS');
-		},
-		percentageComplete: function () {
-			return 100 - _.round((timer.durationAsMilliseconds / timer.originalMilliseconds) * 100, 2);
-		},
-		startTimer: mobx.action('startTimer', function () {
-			timer.isTimerRunning = true;
-		}),
-		stopTimer: mobx.action('stopTimer', function () {
-			timer.isTimerRunning = false;
-		}),
-		reset: mobx.action('resetTimer', function () {
-			timer.stopTimer();
-			timer.durationAsMilliseconds = timer.originalMilliseconds;
-		})
-	});
+		mobx.extendObservable(timer, {
+			durationAsMilliseconds: timer.originalMilliseconds,
+			isTimerRunning: false,
+			isComplete: function () {
+				return timer.durationAsMilliseconds <= 0;
+			},
+			display: function () {
+				return _.padStart(timer.minutesRemaining, 2, 0) + ' : ' + _.padStart(timer.secondsRemaining, 2, 0);
+			},
+			durationAsDate: function () {
+				return new Date(timer.durationAsMilliseconds);
+			},
+			millisecondsRemaining: function () {
+				return _.round(timer.durationAsDate.getUTCMilliseconds(), 2);
+			},
+			secondsRemaining: function () {
+				return timer.durationAsDate.getUTCSeconds();
+			},
+			minutesRemaining: function () {
+				return timer.durationAsDate.getUTCMinutes();
+			},
+			hoursRemaining: function () {
+				return timer.durationAsDate.getUTCHours();
+			},
+			percentageComplete: function () {
+				return 100 - _.round((timer.durationAsMilliseconds / timer.originalMilliseconds) * 100, 2);
+			},
+			startTimer: mobx.action('startTimer', function () {
+				timer.isTimerRunning = true;
+			}),
+			stopTimer: mobx.action('stopTimer', function () {
+				timer.isTimerRunning = false;
+			}),
+			reset: mobx.action('resetTimer', function () {
+				timer.stopTimer();
+				timer.durationAsMilliseconds = timer.originalMilliseconds;
+			})
+		});
 
-	mobx.autorun('countDownTimer', function () {
-		if (timer.isTimerRunning) {
-			intervalID = window.setInterval(function () {
-				mobx.runInAction('timer tick', function () {
-					timer.durationAsMilliseconds -= settings.interval;
-					if (timer.isComplete) {
-						timer.isTimerRunning = false;
-					}
-				});
-			}, settings.interval);
-		} else if (intervalID) {
-			if (settings.resetOnComplete) {
-				timer.reset();
+		mobx.autorun('countDownTimer', function () {
+			if (timer.isTimerRunning) {
+				intervalID = window.setInterval(function () {
+					mobx.runInAction('timer tick', function () {
+						timer.durationAsMilliseconds -= settings.interval;
+						if (timer.isComplete) {
+							timer.isTimerRunning = false;
+						}
+					});
+				}, settings.interval);
+			} else if (intervalID) {
+				if (settings.resetOnComplete) {
+					timer.reset();
+				}
+				window.clearInterval(intervalID);
 			}
-			window.clearInterval(intervalID);
-		}
-	});
+		});
 
-	return timer;
-};
+		return timer;
+	};
 
 var Main = mobxReact.observer(function (props) {
 	var timer = props.timer;
@@ -111,7 +126,7 @@ var timerRenderer = mobxReact.observer(function (props) {
 	return React.DOM.div(null, timer.display);
 });
 
-var timer = countdownTimerFactory(1000);
+var timer = countdownTimerFactory(10000);
 ReactDOM.render(
 	React.createElement(Main, {
 		timer: timer
