@@ -67,9 +67,6 @@ var countdownTimerFactory = function (durationMilliseconds, options) {
 				});
 			}, settings.interval);
 		} else if (intervalID) {
-			if (settings.resetOnComplete) {
-				timer.reset();
-			}
 			window.clearInterval(intervalID);
 		}
 	});
@@ -77,17 +74,17 @@ var countdownTimerFactory = function (durationMilliseconds, options) {
 	return timer;
 };
 
-var blindFactory = function (durationInMinutes, littleBlind, bigBlind) {
+var blindFactory = function (durationInMinutes, smallBlind, bigBlind) {
 
 	var blind = {
 		id: _.uniqueId('blind_')
 	};
 
 	mobx.extendObservable(blind, {
+		smallBlind: smallBlind,
 		bigBlind: bigBlind,
-		littleBlind: littleBlind,
 		active: false,
-		timer: countdownTimerFactory(durationInMinutes),
+		timer: countdownTimerFactory(durationInMinutes * 60000),
 		activateBlind: mobx.action(function activateBlind () {
 			blind.active = true;
 		}),
@@ -120,7 +117,7 @@ var gameFactory = function (title, blindData) {
 
 	mobx.extendObservable(game, {
 		blinds: _.map(blindData, function (blind) {
-			return blindFactory(blind.duration, blind.big, blind.little);
+			return blindFactory(blind.minutes, blind.smallBlind, blind.bigBlind);
 		}),
 		activeBlind: function () {
 			return game.blinds[game.activeBlindIndex];
@@ -158,6 +155,11 @@ var gameFactory = function (title, blindData) {
 			});
 			blindToActivate.active = true;
 		}),
+		activateAndResetPrevBlind: mobx.action('activate and reset previously active blind',
+			function (blindToActivate) {
+				game.activeBlind.resetBlindTimer();
+				game.activateBlind(blindToActivate);
+			}),
 		activateNextBlind: mobx.action('Activate next blind', function () {
 			game.activateBlind(game.blinds[game.activeBlindIndex + 1]);
 		})
@@ -183,10 +185,11 @@ var gameFactory = function (title, blindData) {
 var Main = mobxReact.observer(React.createClass({
 	displayName: 'Main',
 	render: function () {
-		return React.DOM.div(null,
+		return React.DOM.div({className: 'poker-timer'},
 			React.createElement(mobxDevtools.default),
 			React.createElement(activeBlindRenderer, {blind: this.props.game.activeBlind}),
-			React.createElement(timerControl, {game: this.props.game}, timerControl)
+			React.createElement(timerControl, {game: this.props.game}),
+			React.createElement(blindListingRenderer, {game: this.props.game})
 		);
 	}
 }));
@@ -202,7 +205,7 @@ var timerControl = mobxReact.observer(React.createClass({
 			children.push(React.DOM.button({onClick: this.handleStart}, 'start'));
 		}
 
-		return React.DOM.div(null, children);
+		return React.DOM.div({className: 'timer-controls'}, children);
 	},
 	handleStart: function (event) {
 		event.preventDefault();
@@ -219,12 +222,9 @@ var activeBlindRenderer = mobxReact.observer(React.createClass({
 	render: function () {
 		var blind = this.props.blind;
 		return React.DOM.div({className: 'active-blind'},
-			React.createElement(timerPercentageCompleteRenderer, {timer: blind.timer}),
 			React.createElement(timerRenderer, {timer: blind.timer}),
-			React.DOM.div({className: 'blinds'},
-				React.DOM.div(null, blind.littleBlind),
-				React.DOM.div(null, blind.bigBlind)
-			)
+			React.createElement(timerPercentageCompleteRenderer, {timer: blind.timer}),
+			React.createElement(blindRenderer, {blind: blind})
 		);
 	}
 }));
@@ -235,18 +235,81 @@ var timerPercentageCompleteRenderer = mobxReact.observer(function (props) {
 	);
 });
 
-var timerRenderer = mobxReact.observer(React.createClass({
-	displayName: 'timer',
+var timerRenderer = mobxReact.observer(function (props) {
+	var timer = props.timer;
+	return React.DOM.div({className: 'timer'},
+		React.createElement(minutesRenderer, props),
+		React.DOM.div({className: 'divider'}, ':'),
+		React.createElement(secondsRenderer, props)
+	);
+});
+
+var minutesRenderer = mobxReact.observer(function (props) {
+	var timer = props.timer;
+	return React.DOM.div({className: 'minutes'}, _.padStart(timer.minutesRemaining, 2, 0));
+});
+
+var secondsRenderer = mobxReact.observer(function (props) {
+	var timer = props.timer;
+	return React.DOM.div({className: 'seconds'}, _.padStart(timer.secondsRemaining, 2, 0));
+});
+
+var blindRenderer = mobxReact.observer(function (props) {
+	var blind = props.blind;
+	return React.DOM.div({className: 'blind-counts'},
+		React.DOM.div({className: 'small-blind'}, 'Small: ' + blind.smallBlind),
+		React.DOM.div({className: 'big-blind'}, 'Big: ' + blind.bigBlind)
+	);
+});
+
+var blindListingRenderer = mobxReact.observer(function (props) {
+	var game = props.game;
+	return React.DOM.div({className: 'blind-listing'},
+		React.DOM.table({className: 'pure-table pure-table-bordered pure-table-striped'},
+			React.DOM.thead(null,
+				React.DOM.tr(null,
+					React.DOM.th(null, 'Time'),
+					React.DOM.th(null, 'Small'),
+					React.DOM.th(null, 'Big')
+				)
+			),
+			React.DOM.tbody(null,
+				_.map(game.blinds, function (blind) {
+					return React.createElement(blindListingRowRenderer,
+						{key: blind.id, blind: blind, activateBlindAction: game.activateAndResetPrevBlind});
+				})
+			)
+		)
+	);
+});
+
+var blindListingRowRenderer = mobxReact.observer(React.createClass({
 	render: function () {
-		var timer = this.props.timer;
-		return React.DOM.div(null, timer.display);
+		var blind = this.props.blind;
+		var className = blind.active ? 'active' : '';
+		return React.DOM.tr({className: className, onClick: this.activateBlindClickHandler},
+			React.DOM.td(null, React.createElement(timerRenderer, {timer: blind.timer})),
+			React.DOM.td(null, blind.smallBlind),
+			React.DOM.td(null, blind.bigBlind)
+		);
+	},
+	activateBlindClickHandler: function () {
+		this.props.activateBlindAction(this.props.blind)
 	}
 }));
 
 var game = gameFactory('test', [
-	{duration: 10000, little: 20, big: 10},
-	{duration: 1000, little: 30, big: 60},
-	{duration: 1000, little: 40, big: 80}
+	{minutes: .1, smallBlind: 1, bigBlind: 2},
+	{minutes: .1, smallBlind: 2, bigBlind: 4},
+	{minutes: .1, smallBlind: 3, bigBlind: 6},
+	{minutes: .1, smallBlind: 4, bigBlind: 8},
+	{minutes: .1, smallBlind: 5, bigBlind: 10},
+	{minutes: .1, smallBlind: 10, bigBlind: 20},
+	{minutes: .1, smallBlind: 11, bigBlind: 22},
+	{minutes: .1, smallBlind: 12, bigBlind: 28},
+	{minutes: .1, smallBlind: 13, bigBlind: 26},
+	{minutes: .1, smallBlind: 13, bigBlind: 26},
+	{minutes: .1, smallBlind: 13, bigBlind: 26}
 ]);
 // var testTimer = countdownTimerFactory(1);
 // var testBlind = new Blind(1, 100, 50);

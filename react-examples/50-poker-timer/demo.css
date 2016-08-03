@@ -6,18 +6,20 @@
 .active-blind {
 	padding: 10px 0;
 }
+.timer {
+	display: flex;
+	justify-content: center;
+}
 
-.active-blind-timer {
+.active-blind .timer {
 	display: flex;
 	justify-content: center;
 	padding: 0 0 10px 0;
-}
-
-.active-blind-timer > * {
 	font-size: 80px;
 }
+
 .divider {
-	padding: 0 10px;
+	padding: 0 5px;
 }
 
 .progress-bar-container {
@@ -27,4 +29,21 @@
 .progress-bar {
 	height: 30px;
 	background-color: aquamarine;
+}
+
+.blind-counts {
+	padding: 20px;
+	display: flex;
+	justify-content: space-around;
+	font-size: 40px;
+}
+.pure-table tr.active td {
+	font-weight: bold;
+}
+.timer-controls {
+	padding: 0 0 20px 0
+}
+
+.blind-listing table {
+	width: 80%
 }
