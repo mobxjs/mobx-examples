@@ -21,11 +21,6 @@ var countdownTimerFactory = function (durationMilliseconds, options) {
 		isComplete: function () {
 			return timer.durationAsMilliseconds <= 0;
 		},
-		display: function () {
-			return _.padStart(timer.minutesRemaining, 2, 0) + ' : '
-				   + _.padStart(timer.secondsRemaining, 2, 0) + ' : '
-				   + _.padEnd(timer.millisecondsRemaining, 3, 0);
-		},
 		durationAsDate: function () {
 			return new Date(timer.durationAsMilliseconds);
 		},
@@ -85,15 +80,19 @@ var blindFactory = function (durationInMinutes, smallBlind, bigBlind) {
 		bigBlind: bigBlind,
 		active: false,
 		timer: countdownTimerFactory(durationInMinutes * 60000),
-		activateBlind: mobx.action(function activateBlind () {
-			blind.active = true;
-		}),
 		isRunning: function () {
 			return blind.timer.isTimerRunning;
 		},
 		isComplete: function () {
 			return blind.timer.isComplete;
 		},
+		activateBlind: mobx.action(function activateBlind () {
+			blind.active = true;
+		}),
+		deactivateBlind: mobx.action(function activateBlind () {
+			blind.active = false;
+			blind.pauseBlindTimer();
+		}),
 		startBlindTimer: mobx.action(function startBlindTimer () {
 			blind.timer.startTimer();
 		}),
@@ -151,14 +150,22 @@ var gameFactory = function (title, blindData) {
 		}),
 		activateBlind: mobx.action('Activate Blind', function (blindToActivate) {
 			_.forEach(game.blinds, function (blind) {
-				blind.active = false;
+				blind.deactivateBlind();
 			});
-			blindToActivate.active = true;
+			// if the blind is done, let's reset it automatically.
+			if(blindToActivate.isComplete) {
+				blindToActivate.resetBlindTimer();
+			}
+			blindToActivate.activateBlind();
 		}),
-		activateAndResetPrevBlind: mobx.action('activate and reset previously active blind',
+		activateAndResetBlind: mobx.action('activate and reset previously active blind',
 			function (blindToActivate) {
-				game.activeBlind.resetBlindTimer();
+				game.pauseGame();
 				game.activateBlind(blindToActivate);
+				// reset all previous blinds
+				_.forEach(_.slice(game.blinds, game.activeBlindIndex), function(blind){
+					blind.resetBlindTimer();
+				});
 			}),
 		activateNextBlind: mobx.action('Activate next blind', function () {
 			game.activateBlind(game.blinds[game.activeBlindIndex + 1]);
@@ -187,7 +194,7 @@ var Main = mobxReact.observer(React.createClass({
 	render: function () {
 		return React.DOM.div({className: 'poker-timer'},
 			React.createElement(mobxDevtools.default),
-			React.createElement(activeBlindRenderer, {blind: this.props.game.activeBlind}),
+			React.createElement(activeBlindRenderer, {game: this.props.game}),
 			React.createElement(timerControl, {game: this.props.game}),
 			React.createElement(blindListingRenderer, {game: this.props.game})
 		);
@@ -220,7 +227,7 @@ var timerControl = mobxReact.observer(React.createClass({
 var activeBlindRenderer = mobxReact.observer(React.createClass({
 	displayName: 'activeBlind',
 	render: function () {
-		var blind = this.props.blind;
+		var blind = this.props.game.activeBlind;
 		return React.DOM.div({className: 'active-blind'},
 			React.createElement(timerRenderer, {timer: blind.timer}),
 			React.createElement(timerPercentageCompleteRenderer, {timer: blind.timer}),
@@ -270,13 +277,14 @@ var blindListingRenderer = mobxReact.observer(function (props) {
 				React.DOM.tr(null,
 					React.DOM.th(null, 'Time'),
 					React.DOM.th(null, 'Small'),
-					React.DOM.th(null, 'Big')
+					React.DOM.th(null, 'Big'),
+					React.DOM.th(null, '')
 				)
 			),
 			React.DOM.tbody(null,
 				_.map(game.blinds, function (blind) {
 					return React.createElement(blindListingRowRenderer,
-						{key: blind.id, blind: blind, activateBlindAction: game.activateAndResetPrevBlind});
+						{key: blind.id, blind: blind, activateBlindAction: game.activateAndResetBlind});
 				})
 			)
 		)
@@ -287,10 +295,31 @@ var blindListingRowRenderer = mobxReact.observer(React.createClass({
 	render: function () {
 		var blind = this.props.blind;
 		var className = blind.active ? 'active' : '';
-		return React.DOM.tr({className: className, onClick: this.activateBlindClickHandler},
+		return React.DOM.tr({className: className},
 			React.DOM.td(null, React.createElement(timerRenderer, {timer: blind.timer})),
 			React.DOM.td(null, blind.smallBlind),
-			React.DOM.td(null, blind.bigBlind)
+			React.DOM.td(null, blind.bigBlind),
+			React.DOM.td(null,
+				React.createElement(blindControlsRenderer,
+					{blind: blind, activateBlindAction: this.props.activateBlindAction}))
+		);
+	},
+	activateBlindClickHandler: function () {
+		this.props.activateBlindAction(this.props.blind)
+	}
+}));
+
+var blindControlsRenderer = mobxReact.observer(React.createClass({
+	render: function () {
+		var blind = this.props.blind;
+
+		var children = [];
+		if (!blind.active) {
+			children.push(React.DOM.button({onClick: this.activateBlindClickHandler}, 'Activate'));
+		}
+
+		return React.DOM.div(null,
+			children
 		);
 	},
 	activateBlindClickHandler: function () {
