@@ -342,7 +342,7 @@ var game = gameFactory('test', [
 	{minutes: .1, smallBlind: 1, bigBlind: 2},
 	{minutes: .1, smallBlind: 2, bigBlind: 4},
 	{minutes: .1, smallBlind: 3, bigBlind: 6},
-	{minutes: 8, smallBlind: 4, bigBlind: 8},
+	{minutes: 2.1, smallBlind: 4, bigBlind: 8},
 	{minutes: 6, smallBlind: 5, bigBlind: 10},
 	{minutes: 6, smallBlind: 10, bigBlind: 20},
 	{minutes: 6, smallBlind: 11, bigBlind: 22},
@@ -367,3 +367,34 @@ function getColor (value) {
 	var hue = ((1 - value) * 120).toString(10);
 	return ["hsl(", hue, ",100%,50%)"].join("");
 }
+
+function speak(whatToSay) {
+	var utterance = new SpeechSynthesisUtterance(whatToSay);
+	window.speechSynthesis.speak(utterance);
+}
+
+speak("Welcome to the red cobra's poker den.  Let the games begin!");
+
+// blind swap
+mobx.autorun(function () {
+	var activeBlind = game.activeBlind;
+	var blindSwapMessage = "The blinds are now: " + activeBlind.smallBlind + ' ' + activeBlind.bigBlind + '.';
+	speak(blindSwapMessage);
+});
+
+// time warning
+mobx.autorun(function () {
+	var activeTimer = game.activeBlind.timer;
+	if(activeTimer.minutesRemaining === 2 && activeTimer.secondsRemaining === 0) {
+		speak('You have 2 minutes remaining.');
+	}
+	if(activeTimer.minutesRemaining === 1 && activeTimer.secondsRemaining === 0) {
+		speak('You have 1 minute remaining.');
+	}
+	if (activeTimer.minutesRemaining === 0 && activeTimer.secondsRemaining === 10) {
+		speak('10 seconds remain.');
+	}
+	if (activeTimer.minutesRemaining === 0 && activeTimer.secondsRemaining === 5) {
+		speak('5 seconds remain.');
+	}
+});
