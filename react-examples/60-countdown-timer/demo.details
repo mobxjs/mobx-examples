@@ -1,0 +1,10 @@
+ /*
+    ---
+    name: Mobx countdown timer example
+    description: Shows a mobx backed countdown timer
+    authors:
+      - Matt Ruby
+    normalize_css: no
+    js_wrap: b
+    ...
+    */

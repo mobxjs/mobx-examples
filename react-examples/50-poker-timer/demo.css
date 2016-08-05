@@ -1,0 +1,54 @@
+.poker-timer {
+	width: 80%;
+	margin: 10px auto;
+}
+
+.active-blind {
+	padding: 10px 0;
+}
+.timer {
+	display: flex;
+	justify-content: center;
+}
+
+.active-blind .timer {
+	display: flex;
+	justify-content: center;
+	padding: 0 0 10px 0;
+	font-size: 120px;
+}
+
+.divider {
+	padding: 0 5px;
+}
+
+.progress-bar-container {
+	border: 1px solid #ccc;
+}
+
+.progress-bar {
+	height: 60px;
+	background-color: aquamarine;
+}
+
+.blind-counts {
+	padding: 20px;
+	display: flex;
+	justify-content: space-around;
+	font-size: 80px;
+}
+.blind-listing,
+.blind-listing th {
+	text-align: center;
+}
+.pure-table tr.active td {
+	font-weight: bold;
+}
+.timer-controls {
+	padding: 0 0 20px 0
+}
+
+.blind-listing table {
+	margin: 20px auto;
+	width: 80%
+}
