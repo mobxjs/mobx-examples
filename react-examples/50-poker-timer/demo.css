@@ -15,7 +15,7 @@
 	display: flex;
 	justify-content: center;
 	padding: 0 0 10px 0;
-	font-size: 80px;
+	font-size: 120px;
 }
 
 .divider {
@@ -27,7 +27,7 @@
 }
 
 .progress-bar {
-	height: 30px;
+	height: 60px;
 	background-color: aquamarine;
 }
 
@@ -35,7 +35,11 @@
 	padding: 20px;
 	display: flex;
 	justify-content: space-around;
-	font-size: 40px;
+	font-size: 80px;
+}
+.blind-listing,
+.blind-listing th {
+	text-align: center;
 }
 .pure-table tr.active td {
 	font-weight: bold;
@@ -45,5 +49,6 @@
 }
 
 .blind-listing table {
+	margin: 20px auto;
 	width: 80%
 }

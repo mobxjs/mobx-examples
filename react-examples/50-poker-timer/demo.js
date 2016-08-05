@@ -153,7 +153,7 @@ var gameFactory = function (title, blindData) {
 				blind.deactivateBlind();
 			});
 			// if the blind is done, let's reset it automatically.
-			if(blindToActivate.isComplete) {
+			if (blindToActivate.isComplete) {
 				blindToActivate.resetBlindTimer();
 			}
 			blindToActivate.activateBlind();
@@ -163,7 +163,7 @@ var gameFactory = function (title, blindData) {
 				game.pauseGame();
 				game.activateBlind(blindToActivate);
 				// reset all previous blinds
-				_.forEach(_.slice(game.blinds, game.activeBlindIndex), function(blind){
+				_.forEach(_.slice(game.blinds, game.activeBlindIndex), function (blind) {
 					blind.resetBlindTimer();
 				});
 			}),
@@ -173,7 +173,7 @@ var gameFactory = function (title, blindData) {
 	});
 
 	if (!game.activeBlind) {
-		game.blinds[0].activateBlind();
+		game.activateBlind(game.blinds[0]);
 	}
 
 	mobx.autorun('Auto Next Blind', function () {
@@ -207,9 +207,15 @@ var timerControl = mobxReact.observer(React.createClass({
 		var children = [];
 
 		if (game.isRunning) {
-			children.push(React.DOM.button({onClick: this.handlePause}, 'pause'));
+			children.push(React.DOM.button({
+				onClick: this.handlePause,
+				className: 'pure-button pure-button-primary button-xlarge'
+			}, 'pause'));
 		} else {
-			children.push(React.DOM.button({onClick: this.handleStart}, 'start'));
+			children.push(React.DOM.button({
+				onClick: this.handleStart,
+				className: 'pure-button pure-button-primary button-xlarge'
+			}, 'start'));
 		}
 
 		return React.DOM.div({className: 'timer-controls'}, children);
@@ -236,29 +242,34 @@ var activeBlindRenderer = mobxReact.observer(React.createClass({
 	}
 }));
 
-var timerPercentageCompleteRenderer = mobxReact.observer(function (props) {
-	return React.DOM.div({className: 'progress-bar-container'},
-		React.DOM.div({className: 'progress-bar', style: {width: props.timer.percentageComplete + '%'}})
+var timerPercentageCompleteRenderer = mobxReact.observer(function timerPercentageRenderer(props) {
+	var results = React.DOM.div({className: 'progress-bar-container'},
+		React.DOM.div({
+			className: 'progress-bar', style: {
+				width: props.timer.percentageComplete + '%',
+				backgroundColor: getColor(_.round(props.timer.percentageComplete) / 100)
+			}
+		})
 	);
+	return results;
 });
 
-var timerRenderer = mobxReact.observer(function (props) {
+var timerRenderer = mobxReact.observer(function timerRenderer (props) {
 	var timer = props.timer;
-	return React.DOM.div({className: 'timer'},
-		React.createElement(minutesRenderer, props),
+	var results = React.DOM.div({className: 'timer'},
+		React.createElement(minutesRenderer, {timer: timer}),
 		React.DOM.div({className: 'divider'}, ':'),
-		React.createElement(secondsRenderer, props)
+		React.createElement(secondsRenderer, {timer: timer})
 	);
+	return results;
 });
 
 var minutesRenderer = mobxReact.observer(function (props) {
-	var timer = props.timer;
-	return React.DOM.div({className: 'minutes'}, _.padStart(timer.minutesRemaining, 2, 0));
+	return React.DOM.div({className: 'minutes'}, _.padStart(props.timer.minutesRemaining, 2, 0));
 });
 
 var secondsRenderer = mobxReact.observer(function (props) {
-	var timer = props.timer;
-	return React.DOM.div({className: 'seconds'}, _.padStart(timer.secondsRemaining, 2, 0));
+	return React.DOM.div({className: 'seconds'}, _.padStart(props.timer.secondsRemaining, 2, 0));
 });
 
 var blindRenderer = mobxReact.observer(function (props) {
@@ -331,14 +342,16 @@ var game = gameFactory('test', [
 	{minutes: .1, smallBlind: 1, bigBlind: 2},
 	{minutes: .1, smallBlind: 2, bigBlind: 4},
 	{minutes: .1, smallBlind: 3, bigBlind: 6},
-	{minutes: .1, smallBlind: 4, bigBlind: 8},
-	{minutes: .1, smallBlind: 5, bigBlind: 10},
-	{minutes: .1, smallBlind: 10, bigBlind: 20},
-	{minutes: .1, smallBlind: 11, bigBlind: 22},
-	{minutes: .1, smallBlind: 12, bigBlind: 28},
-	{minutes: .1, smallBlind: 13, bigBlind: 26},
-	{minutes: .1, smallBlind: 13, bigBlind: 26},
-	{minutes: .1, smallBlind: 13, bigBlind: 26}
+	{minutes: 8, smallBlind: 4, bigBlind: 8},
+	{minutes: 6, smallBlind: 5, bigBlind: 10},
+	{minutes: 6, smallBlind: 10, bigBlind: 20},
+	{minutes: 6, smallBlind: 11, bigBlind: 22},
+	{minutes: 5, smallBlind: 12, bigBlind: 28},
+	{minutes: 5, smallBlind: 13, bigBlind: 26},
+	{minutes: 5, smallBlind: 14, bigBlind: 28},
+	{minutes: 5, smallBlind: 15, bigBlind: 30},
+	{minutes: 5, smallBlind: 16, bigBlind: 32},
+	{minutes: 5, smallBlind: 20, bigBlind: 40}
 ]);
 // var testTimer = countdownTimerFactory(1);
 // var testBlind = new Blind(1, 100, 50);
@@ -348,3 +361,9 @@ ReactDOM.render(
 	}),
 	document.getElementById('mount')
 );
+
+function getColor (value) {
+	//value from 0 to 1
+	var hue = ((1 - value) * 120).toString(10);
+	return ["hsl(", hue, ",100%,50%)"].join("");
+}
