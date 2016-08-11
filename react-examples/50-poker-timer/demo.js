@@ -339,10 +339,10 @@ var blindControlsRenderer = mobxReact.observer(React.createClass({
 }));
 
 var game = gameFactory('test', [
-	{minutes: .1, smallBlind: 1, bigBlind: 2},
-	{minutes: .1, smallBlind: 2, bigBlind: 4},
-	{minutes: .1, smallBlind: 3, bigBlind: 6},
-	{minutes: 2.1, smallBlind: 4, bigBlind: 8},
+	{minutes: 10, smallBlind: 1, bigBlind: 2},
+	{minutes: 10, smallBlind: 2, bigBlind: 4},
+	{minutes: 8, smallBlind: 3, bigBlind: 6},
+	{minutes: 8, smallBlind: 4, bigBlind: 8},
 	{minutes: 6, smallBlind: 5, bigBlind: 10},
 	{minutes: 6, smallBlind: 10, bigBlind: 20},
 	{minutes: 6, smallBlind: 11, bigBlind: 22},
