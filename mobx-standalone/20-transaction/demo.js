@@ -2,7 +2,7 @@ var person = mobx.observable({
 	firstName: 'Matt',
 	lastName: 'Ruby',
 	age: 0,
-	fullName: function () {
+	get fullName () {
 		console.count('fullName');
 		return this.firstName + ' ' + this.lastName;
 	}

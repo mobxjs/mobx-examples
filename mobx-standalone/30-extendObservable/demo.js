@@ -4,7 +4,7 @@ var Person = function (firstName, lastName, age) {
 		firstName: firstName,
 		lastName: lastName,
 		age: age,
-		fullName: function () {
+		get fullName () {
 			console.count('fullName');
 			return this.firstName + ' ' + this.lastName;
 		}

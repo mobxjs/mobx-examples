@@ -19,7 +19,7 @@ var todoFactory = function (title) {
 var todoListFactory = function () {
 	var todoList = mobx.observable({
 		todos: [],
-		unfinishedTodoCount: function () {
+		get unfinishedTodoCount () {
 			return todoList.todos.filter(function (todo) {
 				return !todo.finished;
 			}).length;

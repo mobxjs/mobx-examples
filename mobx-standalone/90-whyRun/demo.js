@@ -3,14 +3,14 @@ var person = mobx.observable({
 	lastName: 'Ruby',
 	age: 0,
 	// this field won't tell you about the fields
-	fullName: function () {
+	get fullName () {
 		// this call will not list out the observed fields!
 		// Why? Because they haven't been accessed yet, so MobX doesn't know about them yet.
 		mobx.whyRun();
 		return this.firstName + ' ' + this.lastName;
 	},
 	// this field will show the observed fields
-	fullName2: function () {
+	get fullName2 () {
 		var fullName = this.firstName + ' ' + this.lastName;
 		mobx.whyRun();
 		return fullName;

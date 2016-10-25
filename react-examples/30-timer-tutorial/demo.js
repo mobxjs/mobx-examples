@@ -4,10 +4,10 @@ var Timer = function (initialMilliseconds) {
 	mobx.extendObservable(this, {
 		milliseconds: initialMilliseconds || 0,
 		savedMilliseconds: 0,
-		totalMilliSeconds: function () {
+		get totalMilliSeconds () {
 			return this.milliseconds + this.savedMilliseconds;
 		},
-		display: function () {
+		get display () {
 			return moment(this.totalMilliSeconds).format('mm : ss : SS');
 		},
 		saveTime: mobx.action('saveTime', function () {
@@ -27,22 +27,22 @@ var TimerStore = function () {
 		timer: new Timer(),
 		startTime: null,
 		laps: [],
-		mainDisplay: function () {
+		get mainDisplay () {
 			return this.timer.display;
 		},
-		hasStarted: function () {
+		get hasStarted () {
 			return this.timer.totalMilliSeconds !== 0;
 		},
-		length: function () {
+		get length () {
 			return this.laps.length;
 		},
-		lapTime: function () {
+		get lapTime () {
 			return _.reduce(this.laps, function (result, lap) {
 				result += lap.totalMilliSeconds;
 				return result;
 			}, 0);
 		},
-		lapData: function () {
+		get lapData () {
 			return _.map(this.laps, function (lap, index) {
 				return _.assign({
 					text: 'Lap ' + (index + 1) + ': ' + lap.display

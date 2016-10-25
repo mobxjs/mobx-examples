@@ -41,6 +41,9 @@
 .blind-listing th {
 	text-align: center;
 }
+.pure-table td {
+	padding: 1em;
+}
 .pure-table tr.active td {
 	font-weight: bold;
 }
