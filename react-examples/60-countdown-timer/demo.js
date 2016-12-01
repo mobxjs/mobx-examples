@@ -1,93 +1,135 @@
-var slideModelFactory = function (text, slideShow) {
-	// id is not observable
-	var slide = {
-		id: _.uniqueId('slide_')
+mobx.useStrict(true);
+
+var countdownTimerFactory = function (durationMilliseconds, options) {
+
+	var intervalID;
+
+	var timer = {
+		id: _.uniqueId('countdownTimer_'),
+		originalMilliseconds: durationMilliseconds
 	};
-	return mobx.extendObservable(slide, {
-		// observable fields
-		imageText: text,
-		// computed
-		get active () {
-			return slideShow.activeSlide === this;
+
+	var settings = _.assign({
+		interval: 10,
+		runTime: 0,
+		resetOnComplete: true
+	}, options);
+
+	mobx.extendObservable(timer, {
+		durationAsMilliseconds: timer.originalMilliseconds,
+		isTimerRunning: false,
+		isComplete: function () {
+			return timer.durationAsMilliseconds <= 0;
 		},
-		get imageMain () {
-			return 'https://placeholdit.imgix.net/~text?txtsize=33&txt=' + slide.imageText + '&w=350&h=150';
+		display: function () {
+			return _.padStart(timer.minutesRemaining, 2, 0) + ' : ' + _.padStart(timer.secondsRemaining, 2, 0);
 		},
-		get imageThumb () {
-			return 'https://placeholdit.imgix.net/~text?txtsize=22&txt=' + slide.imageText + '&w=400&h=50';
+		durationAsDate: function () {
+			return new Date(timer.durationAsMilliseconds);
+		},
+		millisecondsRemaining: function () {
+			return _.round(timer.durationAsDate.getUTCMilliseconds(), 2);
+		},
+		secondsRemaining: function () {
+			return timer.durationAsDate.getUTCSeconds();
+		},
+		minutesRemaining: function () {
+			return timer.durationAsDate.getUTCMinutes();
+		},
+		hoursRemaining: function () {
+			return timer.durationAsDate.getUTCHours();
+		},
+		percentageComplete: function () {
+			return 100 - _.round((timer.durationAsMilliseconds / timer.originalMilliseconds) * 100, 2);
+		},
+		startTimer: mobx.action('startTimer', function () {
+			timer.isTimerRunning = true;
+		}),
+		stopTimer: mobx.action('stopTimer', function () {
+			timer.isTimerRunning = false;
+		}),
+		reset: mobx.action('resetTimer', function () {
+			timer.stopTimer();
+			timer.durationAsMilliseconds = timer.originalMilliseconds;
+		})
+	});
+
+	mobx.autorun('countDownTimer', function () {
+		if (timer.isTimerRunning) {
+			intervalID = window.setInterval(function () {
+				mobx.runInAction('timer tick', function () {
+					timer.durationAsMilliseconds -= settings.interval;
+					if (timer.isComplete) {
+						timer.isTimerRunning = false;
+					}
+				});
+			}, settings.interval);
+		} else if (intervalID) {
+			if (settings.resetOnComplete) {
+				timer.reset();
+			}
+			window.clearInterval(intervalID);
 		}
 	});
+
+	return timer;
 };
 
-var slideShowModelFactory = function (rawSlides) {
-	var slideShow = mobx.observable({
-		// observable array
-		slides: _.map(rawSlides, function (slide) {
-			return slideModelFactory(slide.text, slideShow);
-		}),
-		activeSlide: null,
-		findSlideById: function (slideId) {
-			_.find(this.slides, {id: slideId});
-		},
-		// actions
-		setActiveSlide: mobx.action('set active slide', function (slide) {
-			this.activeSlide = slide;
-		})
-	});
-	slideShow.setActiveSlide(slideShow.slides[0]);
-	return slideShow;
-};
-
-var slideShowModel = slideShowModelFactory([
-	{
-		text: 'Heloo!',
-		active: true
-	}, {
-		text: 'Cool!'
-	}, {
-		text: 'MobX!'
-	}
-]);
-
-var mainRenderer = mobxReact.observer(function (props) {
-	var slides = props.slideShow.slides;
-	var slideClickHandler = _.bind(props.slideShow.setActiveSlide, props.slideShow);
-	return React.DOM.div({
-			className: 'slideShow'
-		},
-		React.DOM.div({
-				className: 'mainImage'
-			},
-			React.DOM.img({
-				src: props.slideShow.activeSlide.imageMain
-			})
-		),
-		_.map(props.slideShow.slides, function (slide) {
-			return React.createElement(thumbRenderer, {
-				slide: slide,
-				setActiveSwatch: slideClickHandler
-			});
-		})
+var Main = mobxReact.observer(function (props) {
+	var timer = props.timer;
+	return React.DOM.div(null,
+		React.createElement(mobxDevtools.default),
+		React.createElement(timerWithBar, {timer: timer}),
+		React.createElement(timerControl, {timer: timer}, timerControl)
 	);
 });
 
-var thumbRenderer = mobxReact.observer(React.createClass({
+var timerControl = mobxReact.observer(React.createClass({
 	render: function () {
-		var slide = this.props.slide;
-		return React.DOM.div({
-				className: 'slide' + (slide.active ? ' active' : ''),
-				onClick: this.clickHandler
-			},
-			React.DOM.img({
-				src: slide.imageThumb
-			})
-		);
+		var timer = this.props.timer;
+		var button;
+
+		if (timer.isTimerRunning) {
+			button = React.DOM.button({onClick: this.handlePause}, 'pause');
+		} else {
+			button = React.DOM.button({onClick: this.handleStart}, 'start');
+		}
+
+		return React.DOM.div(null, button);
 	},
-	clickHandler: function () {
-		this.props.setActiveSwatch(this.props.slide.id);
+	handleStart: function (event) {
+		event.preventDefault();
+		this.props.timer.startTimer();
+	},
+	handlePause: function (event) {
+		event.preventDefault();
+		this.props.timer.stopTimer();
 	}
 }));
 
-ReactDOM.render(React.createElement(mainRenderer, {
-	slideShow: slideShowModel
-}), document.getElementById('reactOutput'));
+var timerWithBar = mobxReact.observer(function (props) {
+	var timer = props.timer;
+	return React.DOM.div({className: 'active-blind'},
+		React.createElement(timerPercentageCompleteRenderer, {timer: timer}),
+		React.createElement(timerRenderer, {timer: timer})
+	);
+});
+
+var timerPercentageCompleteRenderer = mobxReact.observer(function (props) {
+	return React.DOM.div({className: 'progress-bar-container'},
+		React.DOM.div({className: 'progress-bar', style: {width: props.timer.percentageComplete + '%'}})
+	);
+});
+
+var timerRenderer = mobxReact.observer(function (props) {
+	var timer = props.timer;
+	return React.DOM.div(null, timer.display);
+});
+
+var timer = countdownTimerFactory(10000);
+ReactDOM.render(
+	React.createElement(Main, {
+		timer: timer
+	}),
+	document.getElementById('mount')
+);
