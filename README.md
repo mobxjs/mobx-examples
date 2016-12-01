@@ -5,6 +5,9 @@ Please feel free to make any suggestions for improvement.
 [Baseline JSFiddle](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/baseline)
 Includes: React, lodash, mobx, mobxReact, and mobxDevtools.
 
+[Baseline JSFiddle with decorators](https://jsfiddle.net/c569stm5/)
+Includes: React, mobx, mobxReact. Thanks @spion!
+
 ## MobX stand-alone examples
 Please note that I have created a `console.log` override that prints the
 `console.log`s out to the results window on JSFiddle.
