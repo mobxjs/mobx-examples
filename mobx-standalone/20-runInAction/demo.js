@@ -13,7 +13,7 @@ mobx.autorun(function auto_fullNameAge () {
 });
 
 // this will print Matt NN 1 times
-mobx.transaction(function () {
+mobx.runInAction(function () {
 	_.times(10, function () {
 		person.age = _.random(40);
 	});
@@ -22,7 +22,7 @@ mobx.transaction(function () {
 person.firstName = 'Mike';
 person.firstName = 'Lissy';
 
-mobx.transaction(function () {
+mobx.runInAction(function () {
 	person.firstName = 'Jon';
 	person.lastName = 'Smith';
 });
