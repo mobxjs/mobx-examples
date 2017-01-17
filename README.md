@@ -45,7 +45,7 @@ Note how easy it is to see the cause in the stack.
 
 ### Utils
 
-* [`transaction`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/20-transaction)
+* [`runInAction`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/20-runInAction)
 
 * [`spy`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/80-spy)
 

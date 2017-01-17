@@ -18,28 +18,28 @@ var countdownTimerFactory = function (durationMilliseconds, options) {
 	mobx.extendObservable(timer, {
 		durationAsMilliseconds: timer.originalMilliseconds,
 		isTimerRunning: false,
-		isComplete: function () {
+		get isComplete () {
 			return timer.durationAsMilliseconds <= 0;
 		},
-		display: function () {
+		get display () {
 			return _.padStart(timer.minutesRemaining, 2, 0) + ' : ' + _.padStart(timer.secondsRemaining, 2, 0);
 		},
-		durationAsDate: function () {
+		get durationAsDate () {
 			return new Date(timer.durationAsMilliseconds);
 		},
-		millisecondsRemaining: function () {
+		get millisecondsRemaining () {
 			return _.round(timer.durationAsDate.getUTCMilliseconds(), 2);
 		},
-		secondsRemaining: function () {
+		get secondsRemaining () {
 			return timer.durationAsDate.getUTCSeconds();
 		},
-		minutesRemaining: function () {
+		get minutesRemaining () {
 			return timer.durationAsDate.getUTCMinutes();
 		},
-		hoursRemaining: function () {
+		get hoursRemaining () {
 			return timer.durationAsDate.getUTCHours();
 		},
-		percentageComplete: function () {
+		get percentageComplete () {
 			return 100 - _.round((timer.durationAsMilliseconds / timer.originalMilliseconds) * 100, 2);
 		},
 		startTimer: mobx.action('startTimer', function () {
@@ -65,7 +65,7 @@ var countdownTimerFactory = function (durationMilliseconds, options) {
 				});
 			}, settings.interval);
 		} else if (intervalID) {
-			if (settings.resetOnComplete) {
+			if (settings.resetOnComplete && timer.isComplete) {
 				timer.reset();
 			}
 			window.clearInterval(intervalID);

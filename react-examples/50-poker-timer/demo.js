@@ -18,25 +18,25 @@ var countdownTimerFactory = function (durationMilliseconds, options) {
 	mobx.extendObservable(timer, {
 		durationAsMilliseconds: timer.originalMilliseconds,
 		isTimerRunning: false,
-		isComplete: function () {
+		get isComplete () {
 			return timer.durationAsMilliseconds <= 0;
 		},
-		durationAsDate: function () {
+		get durationAsDate () {
 			return new Date(timer.durationAsMilliseconds);
 		},
-		millisecondsRemaining: function () {
+		get millisecondsRemaining () {
 			return timer.durationAsDate.getUTCMilliseconds();
 		},
-		secondsRemaining: function () {
+		get secondsRemaining () {
 			return timer.durationAsDate.getUTCSeconds();
 		},
-		minutesRemaining: function () {
+		get minutesRemaining () {
 			return timer.durationAsDate.getUTCMinutes();
 		},
-		hoursRemaining: function () {
+		get hoursRemaining () {
 			return timer.durationAsDate.getUTCHours();
 		},
-		percentageComplete: function () {
+		get percentageComplete () {
 			return 100 - _.round((timer.durationAsMilliseconds / timer.originalMilliseconds) * 100, 2);
 		},
 		startTimer: mobx.action('startTimer', function () {
@@ -80,10 +80,10 @@ var blindFactory = function (durationInMinutes, smallBlind, bigBlind) {
 		bigBlind: bigBlind,
 		active: false,
 		timer: countdownTimerFactory(durationInMinutes * 60000),
-		isRunning: function () {
+		get isRunning () {
 			return blind.timer.isTimerRunning;
 		},
-		isComplete: function () {
+		get isComplete () {
 			return blind.timer.isComplete;
 		},
 		activateBlind: mobx.action(function activateBlind () {
@@ -118,19 +118,19 @@ var gameFactory = function (title, blindData) {
 		blinds: _.map(blindData, function (blind) {
 			return blindFactory(blind.minutes, blind.smallBlind, blind.bigBlind);
 		}),
-		activeBlind: function () {
+		get activeBlind () {
 			return game.blinds[game.activeBlindIndex];
 		},
-		activeBlindIndex: function () {
+		get activeBlindIndex () {
 			return _.findIndex(game.blinds, 'active');
 		},
-		isRunning: function () {
+		get isRunning () {
 			return game.activeBlind.isRunning;
 		},
-		isLastBlindActive: function () {
+		get isLastBlindActive () {
 			return game.activeBlindIndex === game.blinds.length - 1;
 		},
-		isComplete: function () {
+		get isComplete () {
 			return game.isLastBlindActive && game.activeBlind.isComplete;
 		},
 		startGame: mobx.action('Start Game', function () {

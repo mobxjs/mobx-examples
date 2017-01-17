@@ -1,5 +1,5 @@
 var person = mobx.observable({
-	stats: mobx.asMap({})
+	stats: mobx.observable.map({})
 });
 
 mobx.autorun(function auto_statsToJS () {

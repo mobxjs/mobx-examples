@@ -5,7 +5,6 @@ var person = mobx.observable({
     lastName: 'Ruby',
     age: 0,
     get fullName () {
-		mobx.whyRun();
         console.count('fullName');
         return this.firstName + ' ' + this.lastName;
     },
