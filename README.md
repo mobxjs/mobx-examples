@@ -20,6 +20,8 @@ Please note that I have created a `console.log` override that prints the
 
 * [`asMap`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/40-map)
 
+* [`array`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/110-array)
+
 ### Reactions
 
 * [`autorun`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/00-autorun)  

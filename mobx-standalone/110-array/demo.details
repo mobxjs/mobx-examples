@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx map example
+ description: Shows mobx's map feature
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */
