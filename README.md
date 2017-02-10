@@ -53,6 +53,8 @@ Note how easy it is to see the cause in the stack.
 
 * [`whyRun`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/90-whyRun)
 
+* [`untracked`](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/120-untracked) Compare with the normal [computed example](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/mobx-standalone/10-computed)
+
 ## React + MobX examples
 
 * [todo with factories, actions and the dev tools](https://jsfiddle.net/gh/get/library/pure/mattruby/mobx-examples/tree/master/react-examples/00-todo)

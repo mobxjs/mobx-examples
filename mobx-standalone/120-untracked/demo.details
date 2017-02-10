@@ -1,0 +1,10 @@
+ /*
+ ---
+ name: Mobx untracked example
+ description: Shows mobx's untracked feature
+ authors:
+   - Matt Ruby
+ normalize_css: no
+ js_wrap: b
+ ...
+ */
