@@ -3,8 +3,6 @@ var person = mobx.observable({
 	lastName: 'Ruby',
 	age: 0,
 	get fullName () {
-		// Note how this computed value is cached.
-		// We only hit this function 1 time.
 		console.log('hit fullName');
 		return mobx.untracked(function () {
 				return person.firstName
