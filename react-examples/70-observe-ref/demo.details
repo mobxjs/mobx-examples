@@ -1,0 +1,10 @@
+ /*
+    ---
+    name: Mobx observe ref example
+    description: Shows issue with observing refs in mobx-react
+    authors:
+      - James Hush
+    normalize_css: no
+    js_wrap: b
+    ...
+    */
