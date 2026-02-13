@@ -18,4 +18,4 @@ npm run dev
 
 ## Open in CodeSandbox
 
-[![Open in CodeSandbox](https://img.shields.io/badge/Open-CodeSandbox-blue)](https://codesandbox.io/p/devbox/github/mobxjs/mobx-examples/tree/main/examples/09-react-todo)
+[![Open in CodeSandbox](https://img.shields.io/badge/Open-CodeSandbox-blue)](https://codesandbox.io/p/devbox/github/mobxjs/mobx-examples/tree/master/examples/09-react-todo)
